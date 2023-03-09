@@ -1,0 +1,27 @@
+version: '3.0'
+services: 
+    cts-mysql:
+        image: 'bhuvaneshwararaja/cts-mysql:latest'
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+        ports:
+            - '3306:3306'
+    cts-user-ms:
+        image: 'bhuvaneshwararaja/cts-user-microservice:latest'
+        ports:
+            - '8001:8001'
+    cts-node-api:
+        image: 'bhuvaneshwararaja/cts-node-api-gateway:latest'
+        ports:
+            - '8000:8000'
+    
+    # redis:
+    #     image: 'redis:latest'
+    # nginx:
+    #     restart: always
+    #     build:
+    #         dockerfile: Dockerfile.dev
+    #         context: ./nginx
+    #     ports: 
+    #         - '3050:80'
+

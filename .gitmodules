@@ -1,0 +1,9 @@
+[submodule "cts-mysql"]
+	path = cts-mysql
+	url = https://github.com/Tech-Conquest/cts-mysql
+[submodule "cts-node-api"]
+	path = cts-node-api
+	url = https://github.com/Tech-Conquest/cts-node-api
+[submodule "cts-node-user-ms"]
+	path = cts-node-user-ms
+	url = https://github.com/Tech-Conquest/cts-node-user-ms
