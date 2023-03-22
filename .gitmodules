@@ -7,3 +7,6 @@
 [submodule "cts-node-user-ms"]
 	path = cts-node-user-ms
 	url = https://github.com/Tech-Conquest/cts-node-user-ms
+[submodule "cts-node-logger"]
+	path = cts-node-logger
+	url = https://github.com/Tech-Conquest/cts-node-logger.git

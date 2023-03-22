@@ -1,27 +1,66 @@
-version: '3.0'
-services: 
+version: '3'
+networks:
+    platforms-tier:
+        driver: bridge
+        
+services:
     cts-mysql:
         image: 'bhuvaneshwararaja/cts-mysql:latest'
         environment:
             - MYSQL_ROOT_PASSWORD=root
         ports:
             - '3306:3306'
+        networks:
+            - platforms-tier
     cts-user-ms:
         image: 'bhuvaneshwararaja/cts-user-microservice:latest'
         ports:
             - '8001:8001'
+        networks:
+            - platforms-tier
     cts-node-api:
         image: 'bhuvaneshwararaja/cts-node-api-gateway:latest'
         ports:
             - '8000:8000'
+        networks:
+            - platforms-tier
+    cts-node-logger:
+        image:
+        ports:
+            - '8002:8002'
+        networks:
+            - platforms-tier
+
+    cts-zookeeper:
+        image: confluentinc/cp-zookeeper:7.3.2
+        container_name: zookeeper
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+        networks:
+            - platforms-tier
+
+    cts-broker:
+        image: confluentinc/cp-kafka:7.3.2
+        container_name: broker
+        ports:
+        # To learn about configuring Kafka for access across networks see
+        # https://www.confluent.io/blog/kafka-client-cannot-connect-to-broker-on-aws-on-docker-etc/
+        - "9092:9092"
+        hostname: 'kafka-internal.io'
+        depends_on:
+        - cts-zookeeper
+        environment:
+            KAFKA_BROKER_ID: 1
+            KAFKA_ADVERTISED_HOST_NAME: kafka-internal.io:9092
+            KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-internal.io:9092,PLAINTEXT_INTERNAL://broker:29092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+            KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+        networks:
+            - platforms-tier
     
-    # redis:
-    #     image: 'redis:latest'
-    # nginx:
-    #     restart: always
-    #     build:
-    #         dockerfile: Dockerfile.dev
-    #         context: ./nginx
-    #     ports: 
-    #         - '3050:80'
+
 
