@@ -10,3 +10,6 @@
 [submodule "cts-node-logger"]
 	path = cts-node-logger
 	url = https://github.com/Tech-Conquest/cts-node-logger.git
+[submodule "cts-mongodb"]
+	path = cts-mongodb
+	url = https://github.com/Tech-Conquest/cts-mongodb
